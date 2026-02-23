@@ -1,25 +1,37 @@
 pipeline {
-  agent any
+  agent none
+
   stages {
     stage('Back-end') {
       agent {
-        docker { image 'maven:3.8.1-adoptopenjdk-11' }
+        docker {
+          image 'maven:3.8.1-adoptopenjdk-11'
+          label 'Master'
+        }
       }
       steps {
         sh 'mvn --version'
       }
     }
+
     stage('Front-end') {
       agent {
-        docker { image 'node:16-alpine' }
+        docker {
+          image 'node:16-alpine'
+          label 'Master'
+        }
       }
       steps {
         sh 'node --version'
       }
     }
+
     stage('DB') {
       agent {
-        docker { image 'mysql:latest' }
+        docker {
+          image 'mysql:latest'
+          label 'EC2-Agent'
+        }
       }
       steps {
         sh 'touch test.txt'
